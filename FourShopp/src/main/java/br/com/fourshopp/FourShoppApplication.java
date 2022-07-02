@@ -69,10 +69,12 @@ public class FourShoppApplication implements CommandLineRunner {
             String cpf = scanner.next();
             System.out.println("Insira sua senha: ");
             String password = scanner.next();
-            this.cliente = clienteService.loadByEmailAndPassword(cpf, password).orElseThrow(() -> new ObjectNotFoundException(1L, "Cliente"));
-            if (cliente == null) {
-                System.err.println("Usuario não encontrado !");
-                menuInicial(4);
+
+            try {
+                this.cliente = clienteService.loadByEmailAndPassword(cpf, password).orElseThrow(() -> new ObjectNotFoundException(1L, "Cliente"));
+            } catch (ObjectNotFoundException e){
+                System.err.println("Usuário inválido");
+                return;
             }
 
             int contador = 1;
